@@ -10,16 +10,28 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // Labels Outlet
+    @IBOutlet weak var chineseNumberLabel: UILabel!
+    @IBOutlet weak var displayLabel: UILabel!
+    @IBOutlet weak var pendingOperationLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func numberPressed(_ sender: UIButton) {
     }
-
+    
+    
+    @IBAction func performOperation(_ sender: UIButton) {
+    }
+    
+    @IBAction func backspacePressed(_ sender: Any) {
+    }
+    
+    @IBAction func resetCalculator(_ sender: UIButton) {
+    }
+    
 
 }
 
