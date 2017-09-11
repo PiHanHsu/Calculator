@@ -10,7 +10,8 @@ import Foundation
 struct CalculatorBrain {
     var lefthandValue: Double?
     var righthandValue: Double?
-    var result: Double {
+    var hasPerformOperation = false
+    var result: Double? {
         get {
             if let number = lefthandValue{
                 return number
@@ -32,7 +33,8 @@ struct CalculatorBrain {
         "+" : .binary({$0 + $1}),
         "-" : .binary({$0 - $1}),
         "x" : .binary({$0 * $1}),
-        "/" : .binary({$0 / $1})
+        "/" : .binary({$0 / $1}),
+        "=" : .equals
     ]
     
     mutating func setOperand(_ operand: Double){
@@ -40,8 +42,48 @@ struct CalculatorBrain {
             lefthandValue = operand
         }else{
             righthandValue = operand
+            hasPerformOperation = false
         }
     }
     
+    private struct PendingBinaryOperation {
+        var firstOperand: Double?
+        var opeartionFunction: (Double, Double) -> Double
+        
+        func perfromPendingOperation(with secondOperand: Double) -> Double{
+            return opeartionFunction(firstOperand!, secondOperand)
+        }
+    }
+    
+    private var pbo: PendingBinaryOperation?
+    
+    mutating func performOperation(_ symbol: String){
+        if let operation = operations[symbol]{
+            switch operation {
+            case .unary(let unaryFunction):
+                if lefthandValue != nil {
+                    lefthandValue = unaryFunction(lefthandValue!)
+                }
+            case .binary(let binaryFunction):
+                if !hasPerformOperation{
+                    performPendingOperation()
+                }
+                
+                if lefthandValue != nil {
+                    pbo = PendingBinaryOperation(firstOperand: lefthandValue, opeartionFunction: binaryFunction)
+                }
+            case .equals:
+                performPendingOperation()
+            }
+        }
+    }
+    
+    mutating func performPendingOperation(){
+        if lefthandValue != nil && righthandValue != nil {
+            lefthandValue = pbo?.perfromPendingOperation(with: righthandValue!)
+            pbo?.firstOperand = lefthandValue
+            hasPerformOperation = true
+        }
+    }
     
 }

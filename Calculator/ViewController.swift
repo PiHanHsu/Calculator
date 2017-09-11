@@ -35,7 +35,15 @@ class ViewController: UIViewController {
         }
     }
     
-    private var hasDot = false
+    private var pendingOpeationString: String {
+        get {
+            return pendingOperationLabel.text!
+        }
+        set {
+            pendingOperationLabel.text = newValue
+        }
+    }
+    
     var displayValue: Double{
         get {
             return Double(displayString)!
@@ -45,48 +53,95 @@ class ViewController: UIViewController {
         }
     }
     
+    private var brain = CalculatorBrain()
+    private var useIsTyping = false
+    private var hasDot = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     // MARK: IBActions
     @IBAction func numberPressed(_ sender: UIButton) {
-        
-        
-        if sender.currentTitle == "." {
-            if hasDot {
-                return
-            }else{
-                hasDot = true
+        if useIsTyping{
+            if sender.currentTitle == "." {
+                if hasDot {
+                    return
+                }else{
+                    hasDot = true
+                }
             }
-        }
-        
-        if (displayChars[0] == "0" && displayChars.count == 1){
-            if(sender.currentTitle == "."){
-                displayString += sender.currentTitle!
-                hasDot = true
+            
+            if (displayChars[0] == "0" && displayChars.count == 1){
+                if(sender.currentTitle == "."){
+                    displayString += sender.currentTitle!
+                    hasDot = true
+                }else{
+                    displayString = sender.currentTitle!
+                }
             }else{
-                displayString = sender.currentTitle!
+                displayString += sender.currentTitle!
             }
         }else{
-            displayString += sender.currentTitle!
+            displayString = sender.currentTitle!
+            useIsTyping = true
         }
+        
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
+        if useIsTyping{
+            brain.setOperand(displayValue)
+            useIsTyping = false
+        }
+        if let mathSymbol = sender.currentTitle{
+            brain.performOperation(mathSymbol)
+        }
+        
+        if let result = brain.result {
+            if result.truncatingRemainder(dividingBy: 1) == 0 {
+                displayString = String(Int(result))
+            }else{
+                displayString = String(result)
+            }
+        }
+        
+        if let number = brain.lefthandValue {
+            
+            if number.truncatingRemainder(dividingBy: 1) == 0 {
+                if sender.currentTitle! != "="{
+                    pendingOpeationString = String(Int(number)) + sender.currentTitle!
+                }else{
+                    pendingOpeationString = String(Int(number))
+                }
+            }else{
+                if sender.currentTitle! != "="{
+                    pendingOpeationString = String(number) + sender.currentTitle!
+                }else{
+                    pendingOpeationString = String(number)
+                }
+            }
+        }
+        
     }
     
     @IBAction func backspacePressed(_ sender: Any) {
-        if displayChars.count == 1 {
-            displayChars[0] = "0"
-        }else{
-            displayChars.removeLast()
+        if useIsTyping{
+            if displayChars.count == 1 {
+                displayChars[0] = "0"
+            }else{
+                displayChars.removeLast()
+            }
         }
+       
     }
     
     @IBAction func resetCalculator(_ sender: UIButton) {
+        brain = CalculatorBrain()
         displayString = "0"
         hasDot = false
+        pendingOpeationString = " "
+        
     }
     
 
