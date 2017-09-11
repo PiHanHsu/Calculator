@@ -114,16 +114,16 @@ class ViewController: UIViewController {
         if let number = brain.lefthandValue {
             
             if number.truncatingRemainder(dividingBy: 1) == 0 {
-                if sender.currentTitle! != "="{
-                    pendingOpeationString = String(Int(number)) + sender.currentTitle!
+                if sender.currentTitle! == "=" || sender.currentTitle! == "-/+"{
+                     pendingOpeationString = String(Int(number))
                 }else{
-                    pendingOpeationString = String(Int(number))
+                    pendingOpeationString = String(Int(number)) + sender.currentTitle!
                 }
             }else{
-                if sender.currentTitle! != "="{
-                    pendingOpeationString = String(number) + sender.currentTitle!
-                }else{
+                if sender.currentTitle! != "=" || sender.currentTitle! == "%" || sender.currentTitle! == "-/+"{
                     pendingOpeationString = String(number)
+                }else{
+                    pendingOpeationString = String(number) + sender.currentTitle!
                 }
             }
         }
