@@ -13,6 +13,7 @@
 		C245AF3C1F6693810027B21D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C245AF3B1F6693810027B21D /* Assets.xcassets */; };
 		C245AF3F1F6693810027B21D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C245AF3D1F6693810027B21D /* LaunchScreen.storyboard */; };
 		C245AF471F66B1760027B21D /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C245AF461F66B1760027B21D /* CalculatorBrain.swift */; };
+		C27B1B201F66E738003983F0 /* Translation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27B1B1F1F66E738003983F0 /* Translation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		C245AF3E1F6693810027B21D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C245AF401F6693810027B21D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C245AF461F66B1760027B21D /* CalculatorBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
+		C27B1B1F1F66E738003983F0 /* Translation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				C245AF3D1F6693810027B21D /* LaunchScreen.storyboard */,
 				C245AF401F6693810027B21D /* Info.plist */,
 				C245AF461F66B1760027B21D /* CalculatorBrain.swift */,
+				C27B1B1F1F66E738003983F0 /* Translation.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 				C245AF471F66B1760027B21D /* CalculatorBrain.swift in Sources */,
 				C245AF371F6693810027B21D /* ViewController.swift in Sources */,
 				C245AF351F6693810027B21D /* AppDelegate.swift in Sources */,
+				C27B1B201F66E738003983F0 /* Translation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -50,12 +50,15 @@ class ViewController: UIViewController {
         }
         set {
             displayString = String(newValue)
+            chineseNumberLabel.text = translation.translate(from: newValue)
         }
     }
     
     private var brain = CalculatorBrain()
     private var useIsTyping = false
     private var hasDot = false
+    
+    private var translation = Translation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +84,7 @@ class ViewController: UIViewController {
                 }
             }else{
                 displayString += sender.currentTitle!
+                chineseNumberLabel.text = translation.translate(from: displayValue)
             }
         }else{
             displayString = sender.currentTitle!
@@ -99,6 +103,7 @@ class ViewController: UIViewController {
         }
         
         if let result = brain.result {
+            displayValue = result
             if result.truncatingRemainder(dividingBy: 1) == 0 {
                 displayString = String(Int(result))
             }else{
