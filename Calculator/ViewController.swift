@@ -9,6 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    //TODO: format the number on display
+    //TODO: handle overflow
+    //TODO: adjust layout on iPad
 
     // MARK: Labels Outlet
     @IBOutlet weak var chineseNumberLabel: UILabel!
