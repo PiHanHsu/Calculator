@@ -181,6 +181,24 @@ class ViewController: UIViewController {
         
     }
     
-
+    // formating number
+    
+    func formatNumberToString(_ number: Double) -> String{
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let formattedNumberString = numberFormatter.string(from: NSNumber(value:number))
+        return formattedNumberString!
+    }
+    
+    func formatStringToNumber(_ string: String) -> Double?{
+        let formatter = NumberFormatter()
+        formatter.numberStyle = NumberFormatter.Style.decimal
+        
+        if let number = formatter.number(from: string) {
+            let doubleNumber = number.doubleValue
+            return doubleNumber
+        }
+        return nil
+    }
 }
 
