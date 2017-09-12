@@ -143,7 +143,7 @@ class ViewController: UIViewController {
                     pendingOpeationString = String(Int(number)) + sender.currentTitle!
                 }
             }else{
-                if sender.currentTitle! != "=" || sender.currentTitle! == "%" || sender.currentTitle! == "-/+"{
+                if sender.currentTitle! == "=" || sender.currentTitle! == "%" || sender.currentTitle! == "-/+"{
                     pendingOpeationString = String(number)
                 }else{
                     pendingOpeationString = String(number) + sender.currentTitle!
