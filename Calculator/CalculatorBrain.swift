@@ -11,6 +11,7 @@ struct CalculatorBrain {
     var lefthandValue: Double?
     var righthandValue: Double?
     var hasPerformOperation = false
+    var calculateError = false
     var result: Double? {
         get {
             if let number = lefthandValue{
@@ -59,6 +60,7 @@ struct CalculatorBrain {
     
     mutating func performOperation(_ symbol: String){
         if let operation = operations[symbol]{
+            calculateError = false
             switch operation {
             case .unary(let unaryFunction):
                 if lefthandValue != nil {
@@ -81,7 +83,15 @@ struct CalculatorBrain {
     mutating func performPendingOperation(){
         if lefthandValue != nil && righthandValue != nil {
             lefthandValue = pbo?.perfromPendingOperation(with: righthandValue!)
-            pbo?.firstOperand = lefthandValue
+            if let value = lefthandValue{
+                if value > Double(Int.max) || value < Double(Int.min){
+                    lefthandValue = 0
+                    calculateError = true
+                }else{
+                    pbo?.firstOperand = value
+                }
+            }
+           
             hasPerformOperation = true
         }
     }

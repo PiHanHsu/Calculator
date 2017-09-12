@@ -54,7 +54,16 @@ class ViewController: UIViewController {
         }
         set {
             displayString = String(newValue)
-            chineseNumberLabel.text = translation.translate(from: newValue)
+            chineseNumberString = translation.translate(from: newValue)
+        }
+    }
+    
+    var chineseNumberString: String {
+        get {
+            return chineseNumberLabel.text!
+        }
+        set {
+            chineseNumberLabel.text = newValue
         }
     }
     
@@ -70,7 +79,11 @@ class ViewController: UIViewController {
     
     // MARK: IBActions
     @IBAction func numberPressed(_ sender: UIButton) {
+        
         if useIsTyping{
+            guard displayChars.count < 18 else {
+                return
+            }
             if sender.currentTitle == "." {
                 if hasDot {
                     return
@@ -88,7 +101,7 @@ class ViewController: UIViewController {
                 }
             }else{
                 displayString += sender.currentTitle!
-                chineseNumberLabel.text = translation.translate(from: displayValue)
+                chineseNumberString = translation.translate(from: displayValue)
             }
         }else{
             displayString = sender.currentTitle!
@@ -98,15 +111,21 @@ class ViewController: UIViewController {
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
+        
         if useIsTyping{
             brain.setOperand(displayValue)
             useIsTyping = false
+            hasDot = false
         }
         if let mathSymbol = sender.currentTitle{
             brain.performOperation(mathSymbol)
         }
         
         if let result = brain.result {
+            guard !brain.calculateError else{
+                displayError()
+                return
+            }
             displayValue = result
             if result.truncatingRemainder(dividingBy: 1) == 0 {
                 displayString = String(Int(result))
@@ -145,11 +164,20 @@ class ViewController: UIViewController {
        
     }
     
+    func displayError() {
+        brain = CalculatorBrain()
+        displayString = "無法計算"
+        hasDot = false
+        pendingOpeationString = " "
+        chineseNumberString = " "
+    }
+    
     @IBAction func resetCalculator(_ sender: UIButton) {
         brain = CalculatorBrain()
         displayString = "0"
         hasDot = false
         pendingOpeationString = " "
+        chineseNumberString = " "
         
     }
     
