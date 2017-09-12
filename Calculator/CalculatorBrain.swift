@@ -84,7 +84,7 @@ struct CalculatorBrain {
         if lefthandValue != nil && righthandValue != nil {
             lefthandValue = pbo?.perfromPendingOperation(with: righthandValue!)
             if let value = lefthandValue{
-                if value > Double(Int.max) || value < Double(Int.min){
+                if value >= 1e+16 || value <= -1e+16{
                     lefthandValue = 0
                     calculateError = true
                 }else{

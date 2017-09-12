@@ -81,7 +81,7 @@ class ViewController: UIViewController {
     @IBAction func numberPressed(_ sender: UIButton) {
         
         if useIsTyping{
-            guard displayChars.count < 18 else {
+            guard displayChars.count < 16 else {
                 return
             }
             if sender.currentTitle == "." {

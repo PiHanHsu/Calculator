@@ -10,6 +10,11 @@ import Foundation
 struct Translation {
     var chineseNumber: String?
     mutating func translate(from number: Double) -> String {
+        
+        guard (number < 1e+16 || number > -1e+16) else{
+            return " "
+        }
+        print(number)
         let numberStr = String(Int(number))
         var charArray = Array(numberStr)
         
