@@ -10,8 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    //TODO: format the number on display
-    //TODO: handle overflow
     //TODO: adjust layout on iPad
 
     // MARK: Labels Outlet
@@ -20,22 +18,28 @@ class ViewController: UIViewController {
     @IBOutlet weak var pendingOperationLabel: UILabel!
     
     //MARKS: local variables
-    private var displayString: String {
+
+    private var inputString: String {
         get{
-            return displayLabel.text!
+            var charArray = Array(displayLabel.text!)
+            charArray = charArray.filter({$0 != ","})
+            return String(charArray)
         }
-        set {
-            displayLabel.text = newValue
+        set{
+            if let number = Double(newValue){
+                displayValue = number
+            }else{
+                displayLabel.text = inputString
+            }
         }
     }
     
     private var displayChars: Array<Character> {
         get {
-            return Array(displayString)
+            return Array(inputString)
         }
         set {
-            displayString = String(newValue)
-            
+            inputString = String(newValue)
         }
     }
     
@@ -50,10 +54,10 @@ class ViewController: UIViewController {
     
     var displayValue: Double{
         get {
-            return Double(displayString)!
+            return formatStringToNumber(inputString)!
         }
         set {
-            displayString = String(newValue)
+            displayLabel.text = formatNumberToString(newValue)
             chineseNumberString = translation.translate(from: newValue)
         }
     }
@@ -75,6 +79,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        reset()
     }
     
     // MARK: IBActions
@@ -89,25 +94,26 @@ class ViewController: UIViewController {
                     return
                 }else{
                     hasDot = true
+                    displayLabel.text = displayLabel.text! + "."
                 }
             }
-            
-            if (displayChars[0] == "0" && displayChars.count == 1){
-                if(sender.currentTitle == "."){
-                    displayString += sender.currentTitle!
-                    hasDot = true
+            inputString += sender.currentTitle!
+            chineseNumberString = translation.translate(from: displayValue)
+         
+        }else{
+            if sender.currentTitle == "." {
+                if hasDot {
+                    return
                 }else{
-                    displayString = sender.currentTitle!
+                    hasDot = true
+                    displayLabel.text = "0."
                 }
             }else{
-                displayString += sender.currentTitle!
-                chineseNumberString = translation.translate(from: displayValue)
+                inputString = sender.currentTitle!
             }
-        }else{
-            displayString = sender.currentTitle!
+            
             useIsTyping = true
         }
-        
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
@@ -127,11 +133,6 @@ class ViewController: UIViewController {
                 return
             }
             displayValue = result
-            if result.truncatingRemainder(dividingBy: 1) == 0 {
-                displayString = String(Int(result))
-            }else{
-                displayString = String(result)
-            }
         }
         
         if let number = brain.lefthandValue {
@@ -166,7 +167,7 @@ class ViewController: UIViewController {
     
     func displayError() {
         brain = CalculatorBrain()
-        displayString = "無法計算"
+        displayLabel.text = "無法計算"
         hasDot = false
         pendingOpeationString = " "
         chineseNumberString = " "
@@ -174,18 +175,29 @@ class ViewController: UIViewController {
     
     @IBAction func resetCalculator(_ sender: UIButton) {
         brain = CalculatorBrain()
-        displayString = "0"
+        displayLabel.text = "0"
         hasDot = false
         pendingOpeationString = " "
         chineseNumberString = " "
-        
+        useIsTyping = false
     }
+    
+    func reset() {
+        brain = CalculatorBrain()
+        displayLabel.text = "0"
+        hasDot = false
+        pendingOpeationString = " "
+        chineseNumberString = " "
+        useIsTyping = false
+    }
+    
     
     // formating number
     
     func formatNumberToString(_ number: Double) -> String{
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        numberFormatter.maximumFractionDigits = 15
         let formattedNumberString = numberFormatter.string(from: NSNumber(value:number))
         return formattedNumberString!
     }
@@ -193,11 +205,11 @@ class ViewController: UIViewController {
     func formatStringToNumber(_ string: String) -> Double?{
         let formatter = NumberFormatter()
         formatter.numberStyle = NumberFormatter.Style.decimal
-        
         if let number = formatter.number(from: string) {
             let doubleNumber = number.doubleValue
             return doubleNumber
         }
+       
         return nil
     }
 }

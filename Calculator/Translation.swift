@@ -14,7 +14,6 @@ struct Translation {
         guard (number < 1e+16 || number > -1e+16) else{
             return " "
         }
-        print(number)
         let numberStr = String(Int(number))
         var charArray = Array(numberStr)
         
